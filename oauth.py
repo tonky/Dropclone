@@ -48,9 +48,7 @@ from google.appengine.ext.webapp import RequestHandler, WSGIApplication
 # ------------------------------------------------------------------------------
 
 OAUTH_APP_SETTINGS = {
-
     'twitter': {
-
         'consumer_key': 'dIOiFR9CRlfQR21KBBWVw',
         'consumer_secret': 'SzXRNMCiIv4AD2BQPJRxA2jAYBQ0sPbVNuz1IRuTMeU',
 
@@ -64,7 +62,6 @@ OAUTH_APP_SETTINGS = {
         },
 
     'google': {
-
         'consumer_key': '40153335454.apps.googleusercontent.com',
         'consumer_secret': 'pLNKaCqJ383doUco_KrEGb2-',
 
