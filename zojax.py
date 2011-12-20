@@ -27,7 +27,8 @@ class UpFile(db.Model):
 
 class DelFile(webapp2.RequestHandler):
     def post(self, blob_key_string):
-        upfile = UpFile.gql("WHERE blob_key_string = '%s'" % blob_key_string).get()
+        upfile = UpFile.gql("WHERE blob_key_string = '%s'" %
+                    blob_key_string).get()
 
         blob_info = blobstore.BlobInfo.get(upfile.blob_key_string)
         blob_info.delete()
