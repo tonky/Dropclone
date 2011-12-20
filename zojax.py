@@ -4,6 +4,8 @@ from urllib import urlencode, quote as urlquote, unquote_plus as unquote
 import jinja2
 import webapp2
 
+from google.appengine.api import mail
+
 from google.appengine.ext import db
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers, RequestHandler
@@ -23,6 +25,28 @@ class UpFile(db.Model):
     blob_key = blobstore.BlobReferenceProperty()
     blob_key_string = db.StringProperty()
     ct = db.StringProperty()
+
+
+class ShareLink(webapp2.RequestHandler):
+    def post(self):
+        user_email = self.request.get("user_email")
+        file_id = self.request.get("file_id")
+        message = self.request.get("message")
+
+        if not mail.is_email_valid(user_email):
+            self.response.out.write("Email is invalid")
+            return
+
+        sender_address = "Example.com Support <support@example.com>"
+        subject = "File sharing offer from Joe"
+        body = """
+User Joe is sharing a link with you, check it here: %s
+""" % file_id
+
+        mail.send_mail("mailer@dropclone.appspotmail.com",
+                        user_email, subject, body)
+
+        self.response.out.write("Message sent")
 
 
 class DelFile(webapp2.RequestHandler):
@@ -86,4 +110,5 @@ app = webapp2.WSGIApplication([
     ('/upload', UploadFile),
     ('/get/([^/]+)?', GetFile),
     ('/del/([^/]+)?', DelFile),
+    ('/mail/', ShareLink),
 ], debug=True)

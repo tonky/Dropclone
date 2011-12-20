@@ -3,6 +3,9 @@
         <meta name="google-site-verification" content="wzuXc5HvnhS31oE7rUQB-CgIDLqZeIXr8UPSbCwFPOI" />
         <script src="/js/jquery-1.7.1.js" type="text/javascript"></script>
         <script src="/js/test.js" type="text/javascript"></script>
+        <script src="/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.16.custom.css"
+              type="text/css" media="all" />
     </head>
     <body>
         {% if files %}
@@ -11,6 +14,7 @@
                     {{ file.uploaded }}: <a href="/get/{{ file.blob_key_string }}">{{ file.name }}</a>
 
                     <span class="del">delete</span>
+                    <span class="share">share</span>
                 </div>
             {% endfor %}
         {% endif %}
