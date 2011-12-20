@@ -25,6 +25,16 @@ class UpFile(db.Model):
     ct = db.StringProperty()
 
 
+class DelFile(webapp2.RequestHandler):
+    def post(self, blob_key_string):
+        upfile = UpFile.gql("WHERE blob_key_string = '%s'" % blob_key_string).get()
+
+        blob_info = blobstore.BlobInfo.get(upfile.blob_key_string)
+        blob_info.delete()
+        upfile.delete()
+        self.redirect('/')
+
+
 class GetFile(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, resource):
         resource = str(unquote(resource))
@@ -74,5 +84,5 @@ app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/upload', UploadFile),
     ('/get/([^/]+)?', GetFile),
-
+    ('/del/([^/]+)?', DelFile),
 ], debug=True)
