@@ -4,12 +4,14 @@ from urllib import urlencode, quote as urlquote, unquote_plus as unquote
 import jinja2
 import webapp2
 
-from google.appengine.api import mail
+from google.appengine.api import mail, users
 
 from google.appengine.ext import db
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers, RequestHandler
 from google.appengine.ext.webapp import template
+
+from oauth import OAuthHandler, OAuthClient
 
 
 jinja_environment = jinja2.Environment(
@@ -101,6 +103,16 @@ class MainPage(webapp2.RequestHandler):
                 "nickname": False
                 }
 
+        user = users.get_current_user()
+        client = OAuthClient('twitter', self)
+        gdata = OAuthClient('google', self,
+                    scope='https://www.googleapis.com/auth/userinfo.profile')
+
+        if client.get_cookie():
+            info = client.get('/account/verify_credentials')
+            template_values['nickname'] = info['screen_name']
+            template_values['service'] = 'twitter'
+
         template = jinja_environment.get_template('index.html')
         self.response.out.write(template.render(template_values))
 
@@ -111,4 +123,5 @@ app = webapp2.WSGIApplication([
     ('/get/([^/]+)?', GetFile),
     ('/del/([^/]+)?', DelFile),
     ('/mail/', ShareLink),
+    ('/oauth/(.*)/(.*)', OAuthHandler),
 ], debug=True)

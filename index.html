@@ -8,6 +8,17 @@
               type="text/css" media="all" />
     </head>
     <body>
+        {% if nickname %}
+            Hello, {{ nickname }}!
+            <a href="/oauth/{{ service }}/logout">Logout from {{ service }}</a>
+        {% else %}
+            <a href="/oauth/twitter/login">Login via Twitter</a> |
+            <a href="/oauth/google/login">Login via Google</a>
+        {% endif %}
+
+        <br />
+        <br />
+
         {% if files %}
             {% for file in files %}
                 <div class="file" id="{{ file.blob_key_string }}">
