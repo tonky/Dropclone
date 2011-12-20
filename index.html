@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <meta name="google-site-verification" content="wzuXc5HvnhS31oE7rUQB-CgIDLqZeIXr8UPSbCwFPOI" />
+    </head>
+    <body>
+        {% if files %}
+            {% for file in files %}
+                <div class="file" id="{{ file.blob_key_string }}">
+                    {{ file.uploaded }}: <a href="/get/{{ file.blob_key_string }}">{{ file.name }}</a>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <form action="{{ upload_url }}" method="post" enctype='multipart/form-data'>
+            <div><input type="file" name="file_upload"/></div>
+            <div><input type="submit" value="Upload"></div>
+        </form>
+
+    </body>
+</html>
